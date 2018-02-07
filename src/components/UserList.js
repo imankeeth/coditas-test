@@ -15,8 +15,15 @@ class UserList extends Component {
     this.state = {
       repo_table_show: false,
       repos: [],
+      userFullName: '',
     };
     this.toggleReposTableHandler = this.toggleReposTableHandler.bind(this);
+    this.getUserNameFrom = this.getUserNameFrom.bind(this);
+  }
+
+  async componentWillMount() {
+    const { data: { name } } = await axios.get(this.props.url);
+    this.setState({ userFullName: name });
   }
 
   async toggleReposTableHandler(e, url) {
@@ -29,9 +36,15 @@ class UserList extends Component {
     }
   }
 
+  async getUserNameFrom(url) {
+    const { data: { name } } = await axios.get(url);
+    console.log(name);
+    return <strong className="title is-3 is-spaced">{name}</strong>;
+  }
+
   render() {
-    const { login, avatar_url, html_url, repos_url } = this.props;
-    const { repo_table_show, repos } = this.state;
+    const { avatar_url, html_url, repos_url } = this.props;
+    const { repo_table_show, repos, userFullName } = this.state;
 
     return (
       <div className="box" style={styles.box}>
@@ -44,7 +57,7 @@ class UserList extends Component {
           <div className="media-content">
             <div className="content">
               <p>
-                <strong className="title is-3 is-spaced">{login}</strong>
+                <strong className="title is-3 is-spaced">{userFullName}</strong>
                 <br />
                 <small className="subtitle">
                   Profile URL:{' '}
@@ -53,6 +66,8 @@ class UserList extends Component {
                   </a>
                 </small>
                 <br />
+                <h4 className="subtitle">Followers:</h4>
+                {/*followersList()*/}
                 <br />
                 <button className="button is-pulled-right" onClick={e => this.toggleReposTableHandler(e, repos_url)}>
                   {repo_table_show ? 'Collapse' : 'Details'}
@@ -73,6 +88,10 @@ class UserList extends Component {
                 <tr key={repo.id}>
                   <td className="has-text-centered">{repo.name}</td>
                   <td className="has-text-centered">{repo.language || 'No language associated'}</td>
+                  <td className="has-text-centered">
+                    {/*This won't work right now, need to authenticate the app with github*/}
+                    <a href={`${html_url}#fork-destination-box`}>Fork this repo</a>
+                  </td>
                 </tr>
               ))}
             </tbody>

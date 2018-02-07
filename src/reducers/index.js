@@ -10,6 +10,7 @@ const users = (state = defaultState, { type, response, sort_order }) => {
         ...state,
         total_users: response.total_count,
         items: response.items.map(singleUser),
+        error: '',
       };
 
     case types.CHANGE_SORTING_ORDER:
