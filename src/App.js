@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import store from './configureStore';
+import 'bulma/css/bulma.css';
 
+import store from './configureStore';
 import Home from './components/Home';
 
 class App extends Component {

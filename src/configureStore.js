@@ -5,8 +5,7 @@ import thunk from 'redux-thunk';
 import { rootReducers } from './reducers';
 
 const logger = createLogger({
-  duration: false, // print the duration of each action?
-  diff: true,
+  duration: true, // print the duration of each action?
 });
 
 const store = createStore(rootReducers, applyMiddleware(thunk, logger));
